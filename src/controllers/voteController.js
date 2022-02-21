@@ -10,6 +10,7 @@ export async function vote(req, res) {
         if(!choiceExist) {
             return res.sendStatus(404);
         }
+        console.log(choiceExist)
 
         const insertVote = await db.collection('votes').insertOne({vote: idChoice, date: Date.now(), poolId: choiceExist.poolId});
         if(insertVote){
