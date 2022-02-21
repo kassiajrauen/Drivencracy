@@ -7,8 +7,7 @@ const choiceSchema = joi.object({
 });
 
 export async function createChoice(req, res) {
-    const choice = req.body;
-    console.log(choice)
+    const choice = req.body;      
 
     const validate = choiceSchema.validate(choice);   
 
@@ -17,7 +16,10 @@ export async function createChoice(req, res) {
     }
     
     try {
-        // const poolExist = db.collection('pools').findOne({objectId: choice.poolId});
+        const poolExist = db.collection('pools').findOne({objectId: choice.poolId});
+        if(!poolExist) {
+            return res.sendStatus(404);
+        }
 
         const titleExist = await db.collection('choices').findOne({title: choice.title});
         if(titleExist){
@@ -39,8 +41,11 @@ export async function createChoice(req, res) {
 } 
 
 export async function getChoice(req, res) {
+    console.log(req.params.id, "aqui")
+    const idPool = req.params.id;
+
     try {
-        const choices = await db.collection('choices').find({}).toArray();
+        const choices = await db.collection('choices').find({poolId: idPool}).toArray();
             if(choices){
                 console.log(choices);
                 res.status(200).send(choices);
