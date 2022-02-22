@@ -1,5 +1,6 @@
 import db from '../db.js';
 import joi from 'joi';
+import {ObjectId} from 'mongodb';
 
 const choiceSchema = joi.object({
     title: joi.string().required(),
@@ -16,14 +17,20 @@ export async function createChoice(req, res) {
     }
     
     try {
-        const poolExist = db.collection('pools').findOne({objectId: choice.poolId});
+        const poolExist = await db.collection('pools').findOne({_id: ObjectId(choice.poolId)});
+      
         if(!poolExist) {
             return res.sendStatus(404);
+        }
+
+        if(new Date(poolExist.expireAt) < new Date()) {
+            res.sendStatus(403);
         }
 
         const titleExist = await db.collection('choices').findOne({title: choice.title});
         if(titleExist){
             res.sendStatus(409);
+            return;
         }
         
         const choices = await db.collection('choices').insertOne(choice);
