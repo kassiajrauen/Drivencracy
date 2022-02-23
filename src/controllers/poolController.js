@@ -12,7 +12,7 @@ export async function createPool(req, res) {
     
     const validate = poolSchema.validate(pool);
     if(validate.error){
-        res.sendStatus(422)
+        return res.sendStatus(422);
     }
 
     let date = pool.expireAt;
