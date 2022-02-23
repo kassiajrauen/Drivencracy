@@ -39,7 +39,6 @@ export async function getPool(req, res) {
     try {
         const pools = await db.collection('pools').find({}).toArray();
             if(pools){
-                console.log(pools);
                 res.status(200).send(pools);
             }
         

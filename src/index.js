@@ -4,6 +4,9 @@ import {createPool, getPool} from './controllers/poolController.js';
 import {createChoice, getChoice} from './controllers/choiceController.js';
 import {vote} from './controllers/voteController.js';
 import {result} from './controllers/resultController.js';
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const server = express();
 server.use(json());
@@ -21,6 +24,6 @@ server.post('/choice/:id/vote', vote);
 
 server.get('/pool/:id/result', result);
 
-server.listen(5000, () => {
+server.listen(process.env.PORT, () => {
     console.log("Listening on 5000")
 })

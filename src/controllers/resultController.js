@@ -32,12 +32,12 @@ export async function result(req, res) {
                     id = d[i][0];
                 }
             }
-            console.log(id)
+            
             const choiceWin = await db.collection('choices').findOne({_id: new ObjectId(id)});
-            console.log(choiceWin)
+            
 
             poolExist.result = {title: choiceWin.title, count: count}
-            console.log(poolExist)
+            
         }
         
         res.status(200).send(poolExist);
